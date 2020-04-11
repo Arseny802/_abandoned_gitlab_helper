@@ -4,6 +4,8 @@ from model import LogLevels
 
 class Config(object):
     module_name = 'TGP_helper_bot'
+    # TODO: dynamic URL usage by chat (use some default)
+    # TODO: multi URL usage (few URLs per user)
     gitlab_address = 'https://gitlab.taxcom.ru'
     gitlab_token = None
     telegram_token = None
@@ -16,6 +18,7 @@ class Config(object):
     _projects_state = {}
     _chat_ids = []
 
+    # TODO: merge configs, single config for each user
     _projects_state_fn = 'save_state/projects_state.json'
     _chat_ids_fn = 'save_state/chat_ids.json'
 
@@ -23,8 +26,10 @@ class Config(object):
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
+            # TODO: create telegram token reading from console, storing a bit more secure
             with open('tokens/telegram_token', 'r') as token_file:
                 cls.telegram_token = token_file.read()
+            # TODO; make multi user registration, gitlab token reading from chat
             with open('tokens/gitlab_token', 'r') as token_file:
                 cls.gitlab_token = token_file.read()
             persistence.Persistence.create_file(cls._projects_state_fn)
@@ -34,6 +39,7 @@ class Config(object):
 
     @staticmethod
     def get_proxy_settings():
+        # TODO: make dynamic proxy reading from set of sites
         return {
             'proxy_url': 'socks5://94.102.52.28:1080'
         }
