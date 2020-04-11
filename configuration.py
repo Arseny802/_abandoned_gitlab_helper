@@ -3,7 +3,7 @@ from model import LogLevels
 
 
 class Config(object):
-    module_name = 'TGP_helper_bot'
+    module_name = 'gitlab_helper_bot'
     # TODO: dynamic URL usage by chat (use some default)
     # TODO: multi URL usage (few URLs per user)
     gitlab_address = 'https://gitlab.taxcom.ru'
@@ -43,7 +43,7 @@ class Config(object):
     def get_proxy_settings():
         # TODO: make dynamic proxy reading from set of sites
         return {
-            'proxy_url': 'socks5://185.61.92.228:40128'
+            'proxy_url': 'socks5://78.46.18.223:9050'
         }
 
     def load_project_state(self):
@@ -53,7 +53,7 @@ class Config(object):
                 self._projects_state = tmp
         return self._projects_state
 
-    def save_project_state(self, new_state: {}):
+    def save_project_state(self, new_state: dict):
         self.persistence.save(new_state, self._chat_ids_fn)
 
     def load_chat_ids(self):
@@ -63,5 +63,5 @@ class Config(object):
                 self._chat_ids = tmp
         return self._chat_ids
 
-    def save_chat_ids(self, chat_ids: []):
+    def save_chat_ids(self, chat_ids: list):
         self.persistence.save(chat_ids, self._chat_ids_fn)

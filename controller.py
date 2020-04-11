@@ -6,7 +6,7 @@ from gitlab_client import GitlabClient
 from job_poll import JobPull
 from logger import LoggerInstance
 from model import PipelineEventType, LogLevels
-from tgp import Tgp
+from telegram_client import Tgp
 
 
 class Controller:

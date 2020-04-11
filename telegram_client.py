@@ -6,7 +6,7 @@ from telegram.ext import Updater, CommandHandler
 import model
 from configuration import Config
 from logger import LoggerInstance
-from tgp_api import TgpApi
+from telegram_client_api import TgpApi
 
 
 class Tgp(TgpApi):
@@ -56,7 +56,7 @@ class Tgp(TgpApi):
                 updater.dispatcher.add_handler(command)
             updater.job_queue.run_repeating(self.trottled_sending, interval=self.config.telegram_read_delay_sec,
                                             first=0)
-            updater.start_polling()
+            updater.start_polling(timeout=3)
             self.logger.info('Telegram bot polling')
             updater.idle()
             self.logger.info('Telegram bot idle')
