@@ -1,6 +1,7 @@
 import traceback
 
 import gitlab
+
 from common.logger import LoggerInstance
 from common.model import ProjectState, PipelineState, PipelineEvent, PipelineEventType
 from settings.configuration import Config
@@ -32,9 +33,9 @@ class GitlabClient:
         try:
             gitlab_auth = gitlab.Gitlab(Config.gitlab_address, private_token=self.config.gitlab_token)
             gitlab_auth.auth()
-            self.logger.debug('Successfully auth to gitlab.')
+            self.logger.debug('Successfully auth to git_lab.')
         except Exception as e:
-            self.logger.error('failed to connect to gitlab: {}'.format(e))
+            self.logger.error('failed to connect to git_lab: {}'.format(e))
             traceback.print_exc()
         return gitlab_auth
 

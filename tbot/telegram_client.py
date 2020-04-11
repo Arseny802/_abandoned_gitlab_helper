@@ -1,15 +1,15 @@
 import traceback
 from queue import Queue
 
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import CommandHandler, Updater
 
 from common import model
 from common.logger import LoggerInstance
 from settings.configuration import Config
-from telegram.telegram_client_api import TgpApi
+from tbot.telegram_client_api import TBotApi
 
 
-class Tgp(TgpApi):
+class TBot(TBotApi):
     logger = LoggerInstance().logger
     messages = None
     config = None
@@ -24,7 +24,7 @@ class Tgp(TgpApi):
     /start  - to start conversation;
     /stop   - to stop our conversation;
     /ping   - to check if I'm not alive;
-    /status - to get your gitlab status."""
+    /status - to get your git_lab status."""
 
     __command_handlers = []
 
@@ -42,7 +42,7 @@ class Tgp(TgpApi):
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
-            cls.instance = super(Tgp, cls).__new__(cls)
+            cls.instance = super(TBot, cls).__new__(cls)
         return cls.instance
 
     def connect(self):
@@ -127,4 +127,4 @@ class Tgp(TgpApi):
             self.logger.debug("Message successfully sent to chat with id {}.".format(message.chat_id))
 
 
-assert issubclass(Tgp, TgpApi)
+assert issubclass(TBot, TBotApi)

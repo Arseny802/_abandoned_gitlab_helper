@@ -1,4 +1,5 @@
 import logging
+from os import path, mkdir
 
 from common.model import LogLevels
 from settings.configuration import Config
@@ -6,6 +7,8 @@ from settings.configuration import Config
 
 class LoggerInstance:
     logger = None
+
+    __log_directory_name = 'logs/'
 
     __model_to_lib = {
         LogLevels.trace: logging.DEBUG,
@@ -26,15 +29,13 @@ class LoggerInstance:
         self.logger = logging.getLogger(Config.module_name)
         self.logger.setLevel(logging.DEBUG)
 
-        # create console handler and set level to debug
+        fmt_str = '[%(asctime)s] [%(levelname)s] [%(threadName)s]: %(message)s'
+
+        if not path.isdir(self.__log_directory_name):
+            mkdir(self.__log_directory_name)
+        logging.basicConfig(filename=self.__log_directory_name + Config.module_name + '.log',
+                            level=self.__model_to_lib[Config.log_level], format=fmt_str)
         ch = logging.StreamHandler()
         ch.setLevel(self.__model_to_lib[Config.log_level])
-
-        # create formatter
-        formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] [%(threadName)s]: %(message)s')
-
-        # add formatter to ch
-        ch.setFormatter(formatter)
-
-        # add ch to logger
+        ch.setFormatter(logging.Formatter(fmt_str))
         self.logger.addHandler(ch)

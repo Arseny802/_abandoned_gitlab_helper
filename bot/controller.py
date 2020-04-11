@@ -3,10 +3,10 @@ import traceback
 
 from common.logger import LoggerInstance
 from common.model import PipelineEventType, LogLevels
-from gitlab.gitlab_client import GitlabClient
+from git_lab.gitlab_client import GitlabClient
 from job.job_poll import JobPull
 from settings.configuration import Config
-from telegram.telegram_client import Tgp
+from tbot.telegram_client import TBot
 
 
 class Controller:
@@ -14,7 +14,7 @@ class Controller:
 
     def __init__(self):
         self.__config = Config()
-        self.__tgp = Tgp()
+        self.__tgp = TBot()
         self.__gl_client = GitlabClient()
         self.__job_pull = JobPull()
 

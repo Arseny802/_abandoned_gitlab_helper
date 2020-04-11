@@ -1,5 +1,5 @@
 from common.logger import LoggerInstance
-from job import Job
+from job.single_job import SingleJob
 from settings.configuration import Config
 
 
@@ -13,14 +13,14 @@ class JobPull:
         self.config = Config()
 
     def add_job_onetime(self, name: str, function):
-        job = Job(name, function, False)
+        job = SingleJob(name, function, False)
         self.__add_job(job)
 
     def add_job_looping(self, name: str, function, delay: float):
-        job = Job(name, function, True, delay)
+        job = SingleJob(name, function, True, delay)
         self.__add_job(job)
 
-    def __add_job(self, job: Job):
+    def __add_job(self, job: SingleJob):
         if self.contains_job(job.name):
             pass
         self.logger.info("Added job '{}' to pull.".format(job.name))

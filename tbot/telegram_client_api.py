@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class TgpApi:
+class TBotApi:
     __metaclass__ = ABCMeta
 
     @abstractmethod

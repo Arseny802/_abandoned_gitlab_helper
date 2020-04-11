@@ -9,4 +9,5 @@ def main():
         controller.sleep()
 
 
-main()
+if __name__ == "__main__":
+    main()
