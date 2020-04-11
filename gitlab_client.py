@@ -17,13 +17,13 @@ class GitlabClient:
         self.gitlab_connection = self.auth()
         if self.gitlab_connection is None:
             pass
-        self.logger.trace('Checking projects...')
+        self.logger.debug('Checking projects...')
         new_projects_state = self._get_all_projects_states()
         events = self._find_interesting_events(self.projects_state, new_projects_state)
         if len(events) > 0:
             self.logger.info('Got events: {}'.format(events))
             return events
-        self.logger.trace('Got no events.')
+        self.logger.debug('Got no events.')
         self.config.save_project_state(new_projects_state)
         self.projects_state = new_projects_state
         return []
@@ -68,7 +68,7 @@ class GitlabClient:
 
     # building state for all projects and all pipelines we can put our hands on
     def _get_all_projects_states(self):
-        self.logger.trace('Getting all projects states...')
+        self.logger.debug('Getting all projects states...')
         acc = {}
 
         for gl_project in self._get_user_projects():
@@ -78,17 +78,17 @@ class GitlabClient:
             except Exception as e:
                 self.logger.error("failed to get project state: {}".format(e))
                 traceback.print_exc()
-        self.logger.trace('Got all projects states.')
+        self.logger.debug('Got all projects states.')
         return acc
 
     def _get_user_projects(self):
-        self.logger.trace('Getting user projects...')
+        self.logger.debug('Getting user projects...')
         current_user = self.gitlab_connection.users.get(self.gitlab_connection.user.id)
         user_projects = []
         for project in self.gitlab_connection.projects.list(all=True):
             if current_user in project.members.list(all=True):
                 user_projects.append(project)
-        self.logger.trace('Got user projects.')
+        self.logger.debug('Got user projects.')
         return user_projects
 
     def _get_single_project_state(self, gl_project):
