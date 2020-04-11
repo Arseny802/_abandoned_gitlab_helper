@@ -31,7 +31,7 @@ class LoggerInstance:
         ch.setLevel(self.__model_to_lib[Config.log_level])
 
         # create formatter
-        formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s')
+        formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] [%(threadName)s]: %(message)s')
 
         # add formatter to ch
         ch.setFormatter(formatter)

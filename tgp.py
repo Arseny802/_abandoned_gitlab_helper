@@ -1,4 +1,7 @@
+import traceback
 from queue import Queue
+
+from telegram.ext import Updater, CommandHandler
 
 import model
 from configuration import Config
@@ -11,6 +14,8 @@ class Tgp(TgpApi):
     messages = None
     config = None
 
+    running = False
+
     projects_state = {}
     chat_ids = []
 
@@ -21,15 +26,45 @@ class Tgp(TgpApi):
     /ping   - to check if I'm not alive;
     /status - to get your gitlab status."""
 
+    __command_handlers = []
+
     def __init__(self):
         self.config = Config()
         self.messages = Queue(self.config.message_queue_length)
         self.chat_ids = self.config.load_chat_ids()
+        self.__command_handlers = [
+            CommandHandler('help', self.help),
+            CommandHandler('start', self.start),
+            CommandHandler('stop', self.stop),
+            CommandHandler('ping', self.ping),
+            CommandHandler('ping', self.status),
+        ]
 
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             cls.instance = super(Tgp, cls).__new__(cls)
         return cls.instance
+
+    def connect(self):
+        if self.running:
+            return
+        try:
+            self.logger.info('Connecting to telegram.')
+            updater = Updater(self.config.telegram_token, use_context=True,
+                              request_kwargs=self.config.get_proxy_settings())
+            for command in self.__command_handlers:
+                updater.dispatcher.add_handler(command)
+            updater.job_queue.run_repeating(self.trottled_sending, interval=self.config.telegram_read_delay_sec,
+                                            first=0)
+            updater.start_polling()
+            self.logger.info('Telegram bot polling')
+            updater.idle()
+            self.logger.info('Telegram bot idle')
+        except Exception as e:
+            self.running = False
+            self.logger.fatal("Telegram error {}".format(e))
+            if self.config.log_level == model.LogLevels.debug:
+                traceback.print_exc()
 
     def start(self, event, update):
         self.logger.debug("Start command occurred; event: {}".format(event))

@@ -6,6 +6,7 @@ def main():
     # FIXME: exception catcher at process level
     while True:
         controller.process()
+        controller.sleep()
 
 
 main()

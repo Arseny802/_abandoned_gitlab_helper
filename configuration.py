@@ -12,8 +12,10 @@ class Config(object):
     message_queue_length = 1000
     log_level = LogLevels.debug
 
+    recheck_timeout_sec = 1200
+    default_job_delay_sec = 20
     telegram_read_delay_sec = 5
-    check_gitlab_delay_sec = 5
+    check_gitlab_delay_sec = 60
 
     _projects_state = {}
     _chat_ids = []
@@ -41,7 +43,7 @@ class Config(object):
     def get_proxy_settings():
         # TODO: make dynamic proxy reading from set of sites
         return {
-            'proxy_url': 'socks5://94.102.52.28:1080'
+            'proxy_url': 'socks5://185.61.92.228:40128'
         }
 
     def load_project_state(self):
