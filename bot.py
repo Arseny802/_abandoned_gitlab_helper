@@ -1,4 +1,4 @@
-from controller import Controller
+from bot.controller import Controller
 
 
 def main():

@@ -1,6 +1,6 @@
-from configuration import Config
+from common.logger import LoggerInstance
 from job import Job
-from logger import LoggerInstance
+from settings.configuration import Config
 
 
 class JobPull:

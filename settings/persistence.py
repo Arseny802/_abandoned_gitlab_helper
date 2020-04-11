@@ -4,7 +4,7 @@ import os
 import traceback
 from json import JSONEncoder
 
-from model import *
+from common.model import *
 
 
 class Persistence:

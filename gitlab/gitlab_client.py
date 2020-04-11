@@ -1,10 +1,9 @@
 import traceback
 
 import gitlab
-
-from configuration import Config
-from logger import LoggerInstance
-from model import ProjectState, PipelineState, PipelineEvent, PipelineEventType
+from common.logger import LoggerInstance
+from common.model import ProjectState, PipelineState, PipelineEvent, PipelineEventType
+from settings.configuration import Config
 
 
 class GitlabClient:

@@ -1,12 +1,12 @@
 import time
 import traceback
 
-from configuration import Config
-from gitlab_client import GitlabClient
-from job_poll import JobPull
-from logger import LoggerInstance
-from model import PipelineEventType, LogLevels
-from telegram_client import Tgp
+from common.logger import LoggerInstance
+from common.model import PipelineEventType, LogLevels
+from gitlab.gitlab_client import GitlabClient
+from job.job_poll import JobPull
+from settings.configuration import Config
+from telegram.telegram_client import Tgp
 
 
 class Controller:

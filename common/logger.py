@@ -1,7 +1,7 @@
 import logging
 
-from configuration import Config
-from model import LogLevels
+from common.model import LogLevels
+from settings.configuration import Config
 
 
 class LoggerInstance:

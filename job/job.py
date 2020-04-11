@@ -2,9 +2,9 @@ import threading
 import time
 import traceback
 
-from configuration import Config
-from logger import LoggerInstance
-from model import LogLevels
+from common.logger import LoggerInstance
+from common.model import LogLevels
+from settings.configuration import Config
 
 
 class Job(threading.Thread):

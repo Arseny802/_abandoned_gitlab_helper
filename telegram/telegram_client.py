@@ -3,10 +3,10 @@ from queue import Queue
 
 from telegram.ext import Updater, CommandHandler
 
-import model
-from configuration import Config
-from logger import LoggerInstance
-from telegram_client_api import TgpApi
+from common import model
+from common.logger import LoggerInstance
+from settings.configuration import Config
+from telegram.telegram_client_api import TgpApi
 
 
 class Tgp(TgpApi):

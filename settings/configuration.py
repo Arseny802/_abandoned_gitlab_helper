@@ -1,5 +1,5 @@
-import persistence
-from model import LogLevels
+from common.model import LogLevels
+from settings import persistence
 
 
 class Config(object):
@@ -29,10 +29,10 @@ class Config(object):
     def __new__(cls):
         if not hasattr(cls, 'instance'):
             # TODO: create telegram token reading from console, storing a bit more secure
-            with open('tokens/telegram_token', 'r') as token_file:
+            with open('../tokens/telegram_token', 'r') as token_file:
                 cls.telegram_token = token_file.read()
             # TODO; make multi user registration, gitlab token reading from chat
-            with open('tokens/gitlab_token', 'r') as token_file:
+            with open('../tokens/gitlab_token', 'r') as token_file:
                 cls.gitlab_token = token_file.read()
             persistence.Persistence.create_file(cls._projects_state_fn)
             persistence.Persistence.create_file(cls._chat_ids_fn)
