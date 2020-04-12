@@ -1,6 +1,7 @@
 import time
 import traceback
 
+from bot.updater import Updater
 from common.logger import LoggerInstance
 from common.model import PipelineEventType, LogLevels
 from git_lab.gitlab_client import GitlabClient
@@ -14,8 +15,9 @@ class Controller:
 
     def __init__(self):
         self.__config = Config()
-        self.__tgp = TBot()
+        self.__t_bot = TBot()
         self.__gl_client = GitlabClient()
+        self.__updater = Updater()
         self.__job_pull = JobPull()
 
     def __new__(cls):
@@ -26,7 +28,8 @@ class Controller:
     def process(self):
         self.__logger.info("Controller process started")
         self.__job_pull.add_job_looping('check pipelines', self.check_pipelines, self.__config.check_gitlab_delay_sec)
-        self.__job_pull.add_job_looping('telegram polling', self.__tgp.connect, self.__config.telegram_read_delay_sec)
+        self.__job_pull.add_job_looping('telegram polling', self.__t_bot.connect, self.__config.telegram_read_delay_sec)
+        self.__job_pull.add_job_looping('updater', self.__updater.update(), self.__config.update_delay_sec)
         self.__job_pull.start_all_jobs()
         self.__logger.info("Controller process finished")
 
@@ -38,7 +41,7 @@ class Controller:
     def check_pipelines(self):
         self._send_events(self.__gl_client.check_projects())
 
-    def _send_events(self, events):
+    def _send_events(self, events: list):
         if events is None:
             return
         try:
@@ -50,7 +53,7 @@ class Controller:
                 elif event.event_type == PipelineEventType.RESTORED:
                     event_text = "\U000026A0  Pipeline for {} : {} restored. {}".format(
                         event.project_name, event.ref, event.url)
-                self.__tgp.push_message_to_chat(event.chat_id, event_text)
+                self.__t_bot.push_message_to_chat(event.chat_id, event_text)
         except Exception as e:
             self.__logger.error("failed to find interesting events {}".format(e))
             if self.__config.log_level == LogLevels.debug:

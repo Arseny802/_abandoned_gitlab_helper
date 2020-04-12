@@ -3,26 +3,27 @@ from settings import persistence
 
 
 class Config(object):
-    module_name = 'gitlab_helper_bot'
+    module_name: str = 'gitlab_helper_bot'
     # TODO: dynamic URL usage by chat (use some default)
     # TODO: multi URL usage (few URLs per user)
-    gitlab_address = 'https://gitlab.taxcom.ru'
-    gitlab_token = None
-    telegram_token = None
-    message_queue_length = 1000
-    log_level = LogLevels.debug
+    gitlab_address: str = 'https://gitlab.taxcom.ru'
+    gitlab_token: str = None
+    telegram_token: str = None
+    message_queue_length: int = 1000
+    log_level: LogLevels = LogLevels.debug
 
-    recheck_timeout_sec = 1200
-    default_job_delay_sec = 20
-    telegram_read_delay_sec = 5
-    check_gitlab_delay_sec = 60
+    update_delay_sec: float = 3600  # an hour
+    recheck_timeout_sec: float = 1200  # 20 minutes
+    default_job_delay_sec: float = 20  # 20 seconds
+    telegram_read_delay_sec: float = 5
+    check_gitlab_delay_sec: float = 60
 
-    _projects_state = {}
-    _chat_ids = []
+    _projects_state: dict = {}
+    _chat_ids: list = []
 
     # TODO: merge configs, single config for each user
-    _projects_state_fn = 'save_state/projects_state.json'
-    _chat_ids_fn = 'save_state/chat_ids.json'
+    _projects_state_fn: str = 'save_state/projects_state.json'
+    _chat_ids_fn: str = 'save_state/chat_ids.json'
 
     persistence = persistence.Persistence()
 
@@ -58,7 +59,7 @@ class Config(object):
 
     def load_chat_ids(self):
         if self._chat_ids is []:
-            tmp = self.persistence.load(self._chat_ids_fn)
+            tmp: list = self.persistence.load(self._chat_ids_fn)
             if tmp is not None:
                 self._chat_ids = tmp
         return self._chat_ids
