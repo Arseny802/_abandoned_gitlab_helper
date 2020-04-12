@@ -1,0 +1,16 @@
+[Unit]
+Description=Gitlab helper. Telegram bot for quik state check.
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+RemainAfterExit=yes
+ExecStartPre=-/usr/bin/screen -wipe
+ExecStart=/usr/bin/screen -dmS gitlab_helper python /opt/gitlab_helper/bot.py
+ExecStop=/usr/bin/screen -S reader -X quit
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
