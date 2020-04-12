@@ -3,10 +3,10 @@ from queue import Queue
 
 from telegram.ext import CommandHandler, Updater
 
-from common import model
-from common.logger import LoggerInstance
-from settings.configuration import Config
-from tbot.telegram_client_api import TBotApi
+from src.common import model
+from src.common.logger import LoggerInstance
+from src.settings.configuration import Config
+from src.tbot.telegram_client_api import TBotApi
 
 
 class TBot(TBotApi):
